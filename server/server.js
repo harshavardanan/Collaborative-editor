@@ -1,15 +1,28 @@
-const app = require("express")();
-const http = require("http").createServer(app);
+const express = require("express");
+const http = require("http");
 const cors = require("cors");
-const artist = require("consoleartist");
+const socketIo = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-const io = require("socket.io")(http, { cors: { origin: "*" } });
+
+const io = socketIo(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
-  console.log(artist.green(`User connected: ${socket.id}`));
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("editing", (data) => {
+    socket.broadcast.emit("editing", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
 });
-http.listen(PORT, () => {
-  console.log(artist.cyan("Server is running on port " + PORT));
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

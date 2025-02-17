@@ -26,7 +26,6 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="text-2xl font-bold">MyApp</div>
 
-        {/* Navbar links */}
         <div className="hidden md:flex space-x-6">
           <a href="/" className="hover:text-blue-400">
             Home

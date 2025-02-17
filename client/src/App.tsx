@@ -15,11 +15,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div>
       <Navbar />
-      <div className="flex justify-center items-center h-full">
-        {user ? <SocketConfig /> : <SignIn />}
-      </div>
+      {/* <div>{user ? <SocketConfig /> : <SignIn />}</div> */}
+      <SocketConfig />
     </div>
   );
 }
