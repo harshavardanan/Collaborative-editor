@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { auth, signOut } from "./FirebaseConfig";
-import { io } from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+import JoinRoom from "./JoinRoom";
 
 const Navbar = () => {
   const [user, setUser] = useState<any>(auth.currentUser);
-  const [room, setRoom] = useState<string>("");
-  const joinRoom = () => {
-    io(ENDPOINT).emit("join-room", room);
-  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -31,26 +25,14 @@ const Navbar = () => {
     <div className="bg-gray-800 text-white p-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="text-2xl font-bold">MyApp</div>
-
         <div className="hidden md:flex space-x-6">
           <a href="/" className="hover:text-blue-400">
-            Home
+            Login
           </a>
-          <a href="/about" className="hover:text-blue-400">
-            About
-          </a>
-          <a href="/services" className="hover:text-blue-400">
-            Services
-          </a>
-          <input
-            placeholder="Enter room number"
-            onChange={(e) => setRoom(e.target.value)}
-            value={room}
-          />
-          <button onClick={joinRoom}>Join</button>
         </div>
-
-        {/* Logout button */}
+        <div>
+          <JoinRoom />
+        </div>
         {user ? (
           <button
             onClick={handleLogout}
@@ -60,8 +42,6 @@ const Navbar = () => {
           </button>
         ) : null}
       </div>
-
-      {/* Mobile menu */}
       <div className="md:hidden">
         <button className="text-white">Menu</button>
       </div>
