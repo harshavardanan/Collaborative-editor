@@ -9,13 +9,11 @@ const SocketConfig = () => {
 
   useEffect(() => {
     const socket = io(ENDPOINT);
-
     socket.on("connect", () => {
       console.log("Connected to server");
-
       socket.on("editing", (data: string) => {
         console.log("data received from server", data);
-        setEditorData(data); // Update local state with data from the server
+        setEditorData(data);
       });
     });
 
@@ -26,7 +24,8 @@ const SocketConfig = () => {
 
   const sendChanges = (editorData: string) => {
     console.log("sending data to server", editorData);
-    io(ENDPOINT).emit("editing", editorData); // Send the updated text to the server
+    io(ENDPOINT).emit("editing", editorData);
+    S;
   };
 
   return (
