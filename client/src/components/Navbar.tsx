@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { auth, signOut } from "./FirebaseConfig";
+import { io } from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
 
 const Navbar = () => {
   const [user, setUser] = useState<any>(auth.currentUser);
+  const [room, setRoom] = useState<string>("");
+  const joinRoom = () => {
+    io(ENDPOINT).emit("join-room", room);
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -36,9 +42,12 @@ const Navbar = () => {
           <a href="/services" className="hover:text-blue-400">
             Services
           </a>
-          <a href="/contact" className="hover:text-blue-400">
-            Contact
-          </a>
+          <input
+            placeholder="Enter room number"
+            onChange={(e) => setRoom(e.target.value)}
+            value={room}
+          />
+          <button onClick={joinRoom}>Join</button>
         </div>
 
         {/* Logout button */}
