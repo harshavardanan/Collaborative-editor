@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./Users");
 
 app.use(cors());
+app.use("/", require("./Routes/Users"));
 
 const io = socketIo(server, { cors: { origin: "*" } });
 

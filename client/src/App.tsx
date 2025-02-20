@@ -17,6 +17,7 @@ export default function App() {
   return (
     <div>
       <Navbar />
+      <SignIn />
       {/* <div>{user ? <SocketConfig /> : <SignIn />}</div> */}
       <SocketConfig />
     </div>

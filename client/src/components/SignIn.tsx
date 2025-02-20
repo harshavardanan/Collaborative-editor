@@ -10,12 +10,14 @@ const SignIn = () => {
     <div>
       <input
         placeholder="someone@example.com"
+        type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         placeholder="Password"
         value={password}
+        type="password"
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleLogin}>Sign In</button>
