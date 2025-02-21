@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
       email,
       name,
     });
-    res.status(200).json(user).json("user saved");
+    res.status(200).json(user);
   } catch (err) {
     res.status(400).json({ message: err });
   }
