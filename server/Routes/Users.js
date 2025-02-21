@@ -3,8 +3,13 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../Model/UserModel");
 
-router.get("/", (req, res) => {
-  res.send("Welcome home 🏠");
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -14,9 +19,9 @@ router.post("/", async (req, res) => {
       email,
       name,
     });
-    res.status(200).json(user);
+    res.status(200).json(user).json("user saved");
   } catch (err) {
-    res.status(400).json({ message: error });
+    res.status(400).json({ message: err });
   }
 });
 
