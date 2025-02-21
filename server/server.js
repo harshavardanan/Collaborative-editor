@@ -9,7 +9,7 @@ const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use("/", require("./Routes/Users"));
+app.use("/register", require("./Routes/Users"));
 
 socketConnect(server, cors);
 connectDB();
