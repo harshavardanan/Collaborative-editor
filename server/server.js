@@ -3,13 +3,13 @@ const http = require("http");
 const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
+const socketConnect = require("./SocketConfig");
+const connectDB = require("./DB");
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
-const connectDB = require("./DB");
 app.use(cors());
 app.use("/", require("./Routes/Users"));
-const socketConnect = require("./SocketConfig");
 
 socketConnect(server);
 connectDB();
