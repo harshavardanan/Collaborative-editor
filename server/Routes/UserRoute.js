@@ -84,9 +84,9 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // Check if user exists
-    const user = await User.findOne({ email: "harsh@gmail.com" });
-    const isMatched = await bcrypt.compare("qwertyuiop", user.password);
-    console.log("password matched:", isMatched);
+    // const user = await User.findOne({ email: "harsh@gmail.com" });
+    // const isMatched = await bcrypt.compare("qwertyuiop", user.password);
+    // console.log("password matched:", isMatched);
     if (!user) {
       return res.status(400).json({ message: "Email or password incorrect" });
     }
