@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { auth } from "./components/FirebaseConfig";
 import { User } from "firebase/auth"; // Import User type from Firebase
 import Navbar from "./components/Navbar";
 import SignIn from "./components/SignIn";
+import TextEditor from "./components/TextEditor";
+
 import SocketConfig from "./components/SocketConfig";
 
 export default function App() {
@@ -15,11 +18,16 @@ export default function App() {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <SignIn />
-      {/* <div>{user ? <SocketConfig /> : <SignIn />}</div> */}
-      <SocketConfig />
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          {/* Route for Home page */}
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/" element={<TextEditor />} />
+          <Route path="/socket" element={<SocketConfig />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }

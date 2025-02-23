@@ -83,30 +83,50 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if user exists
-    // const user = await User.findOne({ email: "harsh@gmail.com" });
-    // const isMatched = await bcrypt.compare("qwertyuiop", user.password);
-    // console.log("password matched:", isMatched);
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    // If user not found, log the email and send error message
     if (!user) {
+      console.log("User not found with email:", email); // Log the email
       return res.status(400).json({ message: "Email or password incorrect" });
     }
 
-    // Compare password
+    // Log the user's stored password and the provided password for debugging
+    console.log("Stored password:", user.password);
+    console.log("Provided password:", password);
+
+    // Compare the password with the hashed password in the database
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
+      console.log("Password mismatch"); // Log password mismatch
       return res.status(400).json({ message: "Email or password incorrect" });
     }
 
     // Generate JWT Token
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.json({ message: "Login successful", token });
+    // Respond with the token and user info
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        username: user.username,
+        role: user.role,
+      },
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Error during login:", err.message); // Log any error during the process
+    res.status(500).json({ message: "Server error: " + err.message });
   }
 });
+
 module.exports = router;
