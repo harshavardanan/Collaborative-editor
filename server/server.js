@@ -9,7 +9,8 @@ const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use("/register", require("./Routes/Users"));
+app.use(express.json());
+app.use("/register_user", require("./Routes/Users"));
 
 socketConnect(server, cors);
 connectDB();
