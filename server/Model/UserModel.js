@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    username: { type: String, unique: true, sparse: true },
-    password: { type: String, required: true }, // `sparse: true` avoids duplicate null errors
+    username: { type: String, unique: true, sparse: true }, // `sparse: true` avoids duplicate null errors
+    password: { type: String, required: true },
     profilePicture: { type: String },
     provider: { type: String },
     providerId: { type: String },
@@ -14,6 +15,12 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

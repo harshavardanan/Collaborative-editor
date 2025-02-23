@@ -6,11 +6,14 @@ const server = http.createServer(app);
 const socketConnect = require("./SocketConfig");
 const connectDB = require("./DB");
 const dotenv = require("dotenv").config();
+const passport = require("passport");
+require("./Config/Passport");
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use("/register_user", require("./Routes/Users"));
+app.use("/", require("./Routes/UserRoute"));
+app.use(passport.initialize());
 
 socketConnect(server, cors);
 connectDB();
