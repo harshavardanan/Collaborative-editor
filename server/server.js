@@ -12,8 +12,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use("/", require("./Routes/UserRoute"));
 app.use(passport.initialize());
+app.use("/api/", require("./Routes/UserRoute"));
+app.use("/api/auth", require("./Routes/AuthRoutes"));
 
 socketConnect(server, cors);
 connectDB();
