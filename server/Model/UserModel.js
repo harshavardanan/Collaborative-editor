@@ -24,14 +24,14 @@ const userSchema = new mongoose.Schema(
   { timestamps: true } // This will auto-create `createdAt` and `updatedAt` fields
 );
 
-// Password hashing before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // Only hash password if it's new or modified
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
+// // Password hashing before saving
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) return next(); // Only hash password if it's new or modified
+//   this.password = await bcrypt.hash(this.password, 10);
+//   next();
+// });
 
-// Creating the User model
+// // Creating the User model
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
