@@ -6,19 +6,15 @@ const router = express.Router();
 
 // Google Auth - Redirect user to Google login
 router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
-
-// Google Auth Callback - Handles Google's response
 router.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    const token = generateToken(req.user); // Generate JWT token
-    res.cookie("token", token, { httpOnly: true }); // Store in cookie
-    res.redirect("/dashboard"); // Redirect user after login
-  }
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
 );
 
 // GitHub Auth

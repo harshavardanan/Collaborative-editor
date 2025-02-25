@@ -1,5 +1,5 @@
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 const MicrosoftStrategy = require("passport-microsoft").Strategy;
 const AppleStrategy = require("passport-apple").Strategy;
@@ -7,6 +7,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwt = require("jsonwebtoken");
 const User = require("../Model/UserModel");
+require("dotenv").config();
 
 // JWT Strategy
 const jwtOptions = {
@@ -34,25 +35,13 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/api/auth/google/callback",
+      callbackURL: "http://localhost:5000/auth/google/callback",
+      passReqToCallback: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        let user = await User.findOne({ providerId: profile.id });
-
-        if (!user) {
-          user = new User({
-            username: profile.displayName,
-            email: profile.emails[0].value,
-            provider: "google",
-            providerId: profile.id,
-          });
-          await user.save();
-        }
-        return done(null, user);
-      } catch (err) {
-        return done(err);
-      }
+    function (request, accessToken, refreshToken, profile, done) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return done(err, user);
+      });
     }
   )
 );
