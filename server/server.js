@@ -9,12 +9,41 @@ const dotenv = require("dotenv").config();
 const passport = require("passport");
 require("./Config/Passport");
 const PORT = process.env.PORT || 5000;
+const session = require("express-session");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, httpOnly: true }, // Secure: true if using HTTPS
+  })
+);
 app.use(passport.initialize());
+app.use(passport.session());
 app.use("/api/", require("./Routes/UserRoute"));
 app.use("/", require("./Routes/AuthRoutes"));
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401);
+}
+
+app.get("/user", (req, res) => {
+  console.log("Session Data:", req.session);
+  console.log("User Data:", req.user);
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized, please log in" });
+  }
+
+  res.json({ message: `Hello ${req.user.displayName}`, user: req.user });
+});
 
 socketConnect(server, cors);
 connectDB();
