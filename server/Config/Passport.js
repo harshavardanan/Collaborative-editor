@@ -137,9 +137,11 @@ passport.use(
 );
 
 // Serialize and Deserialize User (For session-based authentication)
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
