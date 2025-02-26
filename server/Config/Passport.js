@@ -12,7 +12,7 @@ require("dotenv").config();
 // JWT Strategy
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET, // Use a secure secret key
+  secretOrKey: process.env.JWT_SECRET, 
 };
 
 passport.use(
