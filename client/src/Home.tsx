@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import TextEditor from "./components/TextEditor";
 import SocketConfig from "./components/SocketConfig";
 
 export default function Home() {
   const [roomName, setRoomName] = useState<string>("");
   const [userData, setUserData] = useState<any>(null);
+  const [joinedRoom, setJoinedRoom] = useState<boolean>(false);
 
   const getRoomName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
@@ -12,7 +12,9 @@ export default function Home() {
 
   const joinRoom = () => {
     if (!roomName || !userData?.displayName) return;
-    else console.log(roomName);
+    else setJoinedRoom(true);
+
+    console.log(roomName);
   };
 
   useEffect(() => {
@@ -31,17 +33,22 @@ export default function Home() {
   //console.log(userData);
   return (
     <div>
-      <h1>HOME</h1>
-      <p>Welcome back, {userData?.displayName}</p>
-      <input
-        type="text"
-        placeholder="Enter room number"
-        name="roomName"
-        value={roomName}
-        onChange={getRoomName}
-      />
-      <button onClick={joinRoom}>JOIN ROOM</button>
-      <SocketConfig userData={userData}  roomName={roomName} />
+      {joinedRoom ? (
+        <SocketConfig userData={userData} roomName={roomName} />
+      ) : (
+        <div>
+          <h1>HOME</h1>
+          <p>Welcome back, {userData?.displayName}</p>
+          <input
+            type="text"
+            placeholder="Enter room number"
+            name="roomName"
+            value={roomName}
+            onChange={getRoomName}
+          />
+          <button onClick={joinRoom}>JOIN ROOM</button>
+        </div>
+      )}
     </div>
   );
 }
