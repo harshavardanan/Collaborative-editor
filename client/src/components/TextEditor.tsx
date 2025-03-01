@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -19,6 +19,22 @@ export default function TextEditor({
     },
   });
 
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", {
+      method: "GET",
+      credentials: "include", // Ensures cookies/session are included
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("User not authenticated");
+        return res.json();
+      })
+      .then((data) => setUserData(data))
+      .catch((err) => console.error("Error fetching user:", err));
+  }, []);
+
+  console.log(userData);
   useEffect(() => {
     if (editor && editorData !== editor.getHTML()) {
       editor.commands.setContent(editorData);

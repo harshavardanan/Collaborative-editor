@@ -4,8 +4,8 @@ import { auth } from "./components/FirebaseConfig";
 import { User } from "firebase/auth"; // Import User type from Firebase
 import Navbar from "./components/Navbar";
 import SignIn from "./components/SignIn";
+import Home from "./Home";
 import TextEditor from "./components/TextEditor";
-
 import SocketConfig from "./components/SocketConfig";
 
 export default function App() {
@@ -22,9 +22,8 @@ export default function App() {
       <div>
         <Navbar />
         <Routes>
-          {/* Route for Home page */}
           <Route path="/login" element={<SignIn />} />
-          <Route path="/" element={<TextEditor />} />
+          <Route path="/" element={<Home />} />
           <Route path="/socket" element={<SocketConfig />} />
         </Routes>
       </div>
