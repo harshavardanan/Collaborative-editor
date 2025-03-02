@@ -29,9 +29,18 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
         room: roomName,
       });
 
+      // Fetch the current editor state when joining the room
+      newSocket.emit("fetch-editor-state", { room: roomName });
+
       // Listen for real-time updates
       newSocket.on("editing", (data: string) => {
         console.log("Data received from server:", data);
+        setEditorData(data);
+      });
+
+      // Listen for the current editor state when joining the room
+      newSocket.on("editor-state", (data: string) => {
+        console.log("Fetched editor state:", data);
         setEditorData(data);
       });
     });
