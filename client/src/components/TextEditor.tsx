@@ -32,7 +32,7 @@ export default function TextEditor({
       <div className="w-full md:w-2/3 lg:w-1/2 bg-white rounded-lg shadow-lg p-6 space-y-4">
         <EditorContent
           editor={editor}
-          className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none"
+          className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none border-none"
         />
         <div className="flex justify-end text-sm text-gray-500">
           {editor.getText().length} characters
