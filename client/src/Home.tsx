@@ -30,7 +30,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+    <div className="flex items-center justify-center h-screen bg-gray-900 ">
       {joinedRoom ? (
         <SocketConfig userData={userData} roomName={roomName} />
       ) : (
@@ -45,6 +45,7 @@ export default function Home() {
             name="roomName"
             value={roomName}
             onChange={getRoomName}
+            autoComplete="off"
             className="w-full px-4 py-2 text-center text-white-900 rounded-lg focus:ring-2 focus:ring-indigo-400 "
           />
           <button

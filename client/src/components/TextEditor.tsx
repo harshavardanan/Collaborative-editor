@@ -28,11 +28,11 @@ export default function TextEditor({
   if (!editor) return <p>Loading editor...</p>;
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+    <div className="flex justify-center items-center min-h-full w-full bg-gray-50 p-4">
       <div className="w-full md:w-2/3 lg:w-1/2 bg-white rounded-lg shadow-lg p-6 space-y-4">
         <EditorContent
           editor={editor}
-          className="border border-gray-300 rounded-lg p-4"
+          className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none"
         />
         <div className="flex justify-end text-sm text-gray-500">
           {editor.getText().length} characters

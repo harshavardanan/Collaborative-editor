@@ -50,12 +50,17 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-6">
-      <div className="bg-gray-800 w-full max-w-3xl p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-indigo-400 text-center mb-4">
+    <div className="flex flex-col items-center justify-center h-[80] w-full bg-gray-900 ">
+      <div
+        className="bg-gray-800 w-full h-full rounded-lg shadow-lg overflow-hidden"
+        style={{ maxHeight: "80vh" }}
+      >
+        <h2 className="text-2xl font-semibold text-indigo-400 text-center mb-4 sticky top-0 bg-gray-800 py-4 z-10">
           Collaborative Editor - Room: {roomName}
         </h2>
-        <TextEditor editorData={editorData} setEditorData={sendChanges} />
+        <div className="p-6">
+          <TextEditor editorData={editorData} setEditorData={sendChanges} />
+        </div>
       </div>
     </div>
   );
