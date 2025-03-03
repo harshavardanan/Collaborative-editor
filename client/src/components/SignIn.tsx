@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-const SignIn = ({ setShowPopup, signInWithGoogle, signInWithGitHub }) => {
+const SignIn = ({ setShowPopup, signInWithGoogle }) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
@@ -8,7 +8,7 @@ const SignIn = ({ setShowPopup, signInWithGoogle, signInWithGitHub }) => {
     >
       <div
         className="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-80 relative"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         {/* Close Button (X) */}
         <button
@@ -23,28 +23,15 @@ const SignIn = ({ setShowPopup, signInWithGoogle, signInWithGitHub }) => {
 
         {/* Google Sign-In Button */}
         <button
-          className="w-full flex items-center justify-center bg-white text-black py-2 rounded-md mb-3 shadow-md hover:bg-gray-200"
+          className="w-full flex items-center justify-center bg-white text-black py-2 rounded-md shadow-md hover:bg-gray-200"
           onClick={signInWithGoogle}
         >
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+            src="https://img.icons8.com/color/48/google-logo.png"
             alt="Google Logo"
             className="w-5 h-5 mr-2"
           />
           Sign in with Google
-        </button>
-
-        {/* GitHub Sign-In Button */}
-        <button
-          className="w-full flex items-center justify-center bg-gray-700 text-white py-2 rounded-md shadow-md hover:bg-gray-600"
-          onClick={signInWithGitHub}
-        >
-          <img
-            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-            alt="GitHub Logo"
-            className="w-5 h-5 mr-2"
-          />
-          Sign in with GitHub
         </button>
       </div>
     </div>
