@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { User } from "firebase/auth"; // Import User type from Firebase
 import Navbar from "./components/Navbar";
 import Home from "./Home";
-import Room from "./components/Room";
+import { Toaster } from "react-hot-toast";
 import SocketConfig from "./components/SocketConfig";
 
 export default function App() {
@@ -15,6 +15,7 @@ export default function App() {
   return (
     <Router>
       <div>
+        <Toaster position="top-right" />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

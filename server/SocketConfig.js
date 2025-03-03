@@ -25,9 +25,8 @@ const connectSocket = (server, cors) => {
       socket.join(room);
 
       socket.on("editing", ({ room, data }) => {
-        // Update the editor state for the room
         roomEditorState[room] = data;
-        // Broadcast the update to all users in the room
+
         io.to(room).emit("editing", data);
       });
 

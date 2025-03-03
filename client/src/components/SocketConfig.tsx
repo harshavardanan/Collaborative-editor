@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextEditor from "./TextEditor";
 import { io, Socket } from "socket.io-client";
+import { toast } from "react-hot-toast"; // Import toast
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -29,6 +30,14 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
         room: roomName,
       });
 
+      // Show toast message when a user joins
+      toast.success(`${userData.displayName} has joined the room.`);
+
+      // Listen for user disconnect
+      newSocket.on("disconnect", () => {
+        toast.error(`${userData.displayName} has left the room.`);
+      });
+
       // Fetch the current editor state when joining the room
       newSocket.emit("fetch-editor-state", { room: roomName });
 
@@ -46,20 +55,25 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
     });
 
     return () => {
+      // Emit leave-room event before disconnecting
+      newSocket.emit("leave-room", {
+        name: userData.displayName,
+        room: roomName,
+      });
+
       newSocket.disconnect();
     };
   }, [userData?.displayName, roomName]);
 
   // Send text updates to the server
   const sendChanges = (data: string) => {
-    console.log("Sending data to server:", data);
     if (socket) {
       socket.emit("editing", { room: roomName, data });
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[80] w-full bg-gray-900 ">
+    <div className="flex flex-col items-center justify-center h-[80] w-full bg-gray-900">
       <div
         className="bg-gray-800 w-full h-full rounded-lg shadow-lg overflow-hidden"
         style={{ maxHeight: "80vh" }}
