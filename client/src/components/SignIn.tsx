@@ -1,64 +1,51 @@
 import React, { useState } from "react";
 
-const SignIn = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [google, setGoogle] = useState<string>("");
-
-  const handleLogin = () => {
-    console.log(email, password);
-  };
-  const signInWithGoogle = async () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-  };
+const SignIn = ({ setShowPopup, signInWithGoogle, signInWithGitHub }) => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
-        <div className="mb-4">
-          <input
-            type="email"
-            placeholder="someone@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="mb-6">
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={() => setShowPopup(false)}
+    >
+      <div
+        className="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-80 relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button (X) */}
         <button
-          onClick={handleLogin}
-          className="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+          className="absolute top-2 right-3 text-gray-400 hover:text-white"
+          onClick={() => setShowPopup(false)}
         >
-          Sign In
+          ✖
         </button>
 
-        <div className="text-center mb-4">Or sign in with</div>
+        {/* Sign In Title */}
+        <h2 className="text-center text-xl font-semibold mb-4">Sign In</h2>
 
-        <div className="flex flex-col gap-4">
-          <button
-            className="w-full py-3 flex items-center justify-center bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            onClick={signInWithGoogle}
-          >
-            <i className="fab fa-google mr-2"></i> Sign in with Google
-          </button>
-          <button className="w-full py-3 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800">
-            <i className="fab fa-github mr-2"></i> Sign in with GitHub
-          </button>
-          <button className="w-full py-3 flex items-center justify-center bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
-            <i className="fab fa-microsoft mr-2"></i> Sign in with Microsoft
-          </button>
-          <button className="w-full py-3 flex items-center justify-center bg-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black">
-            <i className="fab fa-apple mr-2"></i> Sign in with Apple
-          </button>
-        </div>
+        {/* Google Sign-In Button */}
+        <button
+          className="w-full flex items-center justify-center bg-white text-black py-2 rounded-md mb-3 shadow-md hover:bg-gray-200"
+          onClick={signInWithGoogle}
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+            alt="Google Logo"
+            className="w-5 h-5 mr-2"
+          />
+          Sign in with Google
+        </button>
+
+        {/* GitHub Sign-In Button */}
+        <button
+          className="w-full flex items-center justify-center bg-gray-700 text-white py-2 rounded-md shadow-md hover:bg-gray-600"
+          onClick={signInWithGitHub}
+        >
+          <img
+            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            alt="GitHub Logo"
+            className="w-5 h-5 mr-2"
+          />
+          Sign in with GitHub
+        </button>
       </div>
     </div>
   );
