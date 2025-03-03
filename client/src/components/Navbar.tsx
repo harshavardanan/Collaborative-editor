@@ -27,7 +27,9 @@ const Navbar = () => {
   return (
     <div className="bg-gray-800 text-white p-4 relative">
       <div className="w-[80%] mx-auto flex items-center justify-between">
-        <div className="text-2xl font-bold">MyApp</div>
+        <a href="/" className="text-2xl font-semibold">
+          Home{" "}
+        </a>
 
         <div className="hidden md:flex space-x-6 text-white-900">
           {userData ? (
