@@ -60,7 +60,7 @@ export default function Home() {
           </button>
           <input
             type="text"
-            placeholder="Enter room number"
+            placeholder="Enter room key"
             name="roomName"
             value={roomName}
             onChange={(e) => setRoomName(e.target.value)}
