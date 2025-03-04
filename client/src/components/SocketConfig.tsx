@@ -15,7 +15,7 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    if (!userData?.displayName || !roomName) return;
+    if (!userData?.given_name || !roomName) return;
 
     // Initialize the socket connection
     const newSocket = io(ENDPOINT, { transports: ["websocket"] });
@@ -26,16 +26,19 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
 
       // Emit join-room event
       newSocket.emit("join-room", {
-        name: userData.displayName,
+        name: userData.given_name,
         room: roomName,
+      });
+      newSocket.on("user-joined", ({ user, message }) => {
+        toast.success(`${user} has joined the room.`);
       });
 
       // Show toast message when a user joins
-      toast.success(`${userData.displayName} has joined the room.`);
+      toast.success(`${userData.given_name} has joined the room.`);
 
       // Listen for user disconnect
       newSocket.on("disconnect", () => {
-        toast.error(`${userData.displayName} has left the room.`);
+        toast.error(`${userData.given_name} has left the room.`);
       });
 
       // Fetch the current editor state when joining the room
@@ -57,13 +60,13 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
     return () => {
       // Emit leave-room event before disconnecting
       newSocket.emit("leave-room", {
-        name: userData.displayName,
+        name: userData.given_name,
         room: roomName,
       });
 
       newSocket.disconnect();
     };
-  }, [userData?.displayName, roomName]);
+  }, [userData?.given_name, roomName]);
 
   // Send text updates to the server
   const sendChanges = (data: string) => {

@@ -22,6 +22,10 @@ const connectSocket = (server, cors) => {
         user: "admin",
         text: `${user.name} has joined!`,
       });
+      io.to(user.room).emit("user-joined", {
+        user: user.name,
+        message: `${user.name} has joined the room!`,
+      });
       socket.join(room);
 
       socket.on("editing", ({ room, data }) => {
@@ -41,13 +45,13 @@ const connectSocket = (server, cors) => {
 
       io.to(user.room).emit("user-joiner", {
         userId: user.id,
-        message: `User ${user.id} joined the room`,
+        message: `User ${user.name} joined the room`,
       });
       io.to(user.room).emit("room-data", {
         room: user.room,
         users: getUsersInRoom(user.room),
       });
-      console.log(`User ${user.id} joined room ${user.room}`);
+      console.log(`User ${user.name} joined room ${user.room}`);
     });
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
