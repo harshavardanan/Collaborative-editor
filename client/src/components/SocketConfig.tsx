@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextEditor from "./TextEditor";
 import { io, Socket } from "socket.io-client";
-import { toast } from "react-hot-toast"; // Import toast
+import { toast } from "react-hot-toast";
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -13,6 +13,14 @@ interface SocketConfigProps {
 const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
   const [editorData, setEditorData] = useState<string>("");
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  // Copy room name to clipboard
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(roomName)
+      .then(() => toast.success("Room key copied to clipboard."))
+      .catch(() => toast.error("Failed to copy room key"));
+  };
 
   useEffect(() => {
     if (!userData?.given_name || !roomName) return;
@@ -29,6 +37,8 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
         name: userData.given_name,
         room: roomName,
       });
+
+      // Listen for user-joined event
       newSocket.on("user-joined", ({ user, message }) => {
         toast.success(`${user} has joined the room.`);
       });
@@ -76,17 +86,25 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[80] w-full bg-gray-900">
-      <div
-        className="bg-gray-800 w-full h-full rounded-lg shadow-lg overflow-hidden"
-        style={{ maxHeight: "80vh" }}
-      >
-        <h2 className="text-2xl font-semibold text-indigo-400 text-center mb-4 sticky top-0 bg-gray-800 py-4 z-10">
-          Collaborative Editor - Room: {roomName}
-        </h2>
-        <div className="p-6">
-          <TextEditor editorData={editorData} setEditorData={sendChanges} />
+    <div className="flex flex-col items-center justify-start w-full bg-gray-900 h-screen overflow-hidden">
+      {/* Header Section */}
+      <div className="w-full bg-gray-800 p-4 border-b border-gray-700 sticky top-0 z-50">
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          <h2 className="text-2xl font-semibold text-indigo-400">
+            Collaborative Editor - Room: {roomName}
+          </h2>
+          <button
+            onClick={copyToClipboard}
+            className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+          >
+            Copy Room Key
+          </button>
         </div>
+      </div>
+
+      {/* Editor Section */}
+      <div className="w-full max-w-4xl mx-auto p-6 overflow-y-auto flex-1">
+        <TextEditor editorData={editorData} setEditorData={sendChanges} />
       </div>
     </div>
   );
