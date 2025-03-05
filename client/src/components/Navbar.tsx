@@ -5,7 +5,6 @@ const Navbar = () => {
   const [userData, setUserData] = useState<any>(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  // Fetch user data from backend on mount
   useEffect(() => {
     fetch("http://localhost:5000/auth/user", {
       method: "GET",
@@ -28,7 +27,7 @@ const Navbar = () => {
     <div className="bg-gray-800 text-white p-4 relative">
       <div className="w-[80%] mx-auto flex items-center justify-between">
         <a href="/" className="text-2xl font-semibold">
-          Home{" "}
+          Home
         </a>
 
         <div className="hidden md:flex space-x-6 text-white-900">
@@ -55,8 +54,6 @@ const Navbar = () => {
           <button className="text-white">Menu</button>
         </div>
       </div>
-
-      {/* Popup */}
       {showPopup && (
         <SignIn
           setShowPopup={setShowPopup}

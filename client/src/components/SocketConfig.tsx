@@ -2,30 +2,45 @@ import React, { useState, useEffect } from "react";
 import TextEditor from "./TextEditor";
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ENDPOINT = "http://localhost:5000";
 
-interface SocketConfigProps {
-  userData: any;
-  roomName: string;
-}
-
-const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
+const SocketConfig: React.FC = () => {
+  const { roomName, username } = useParams<{
+    roomName: string;
+    username: string;
+  }>();
   const [editorData, setEditorData] = useState<string>("");
   const [socket, setSocket] = useState<Socket | null>(null);
+  const navigate = useNavigate();
 
   // Copy room name to clipboard
   const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(roomName)
-      .then(() => toast.success("Room key copied to clipboard."))
-      .catch(() => toast.error("Failed to copy room key"));
+    if (roomName) {
+      navigator.clipboard
+        .writeText(roomName)
+        .then(() => toast.success("Room key copied to clipboard."))
+        .catch(() => toast.error("Failed to copy room key."));
+    }
+  };
+
+  // Handle leaving the room
+  const handleLeaveRoom = () => {
+    if (socket) {
+      socket.emit("leave-room", { name: username, room: roomName });
+      socket.disconnect();
+      navigate("/"); // Navigate back to home
+    }
   };
 
   useEffect(() => {
-    if (!userData?.given_name || !roomName) return;
+    if (!username || !roomName) {
+      toast.error("Invalid room or user information.");
+      navigate("/");
+      return;
+    }
 
-    // Initialize the socket connection
     const newSocket = io(ENDPOINT, { transports: ["websocket"] });
     setSocket(newSocket);
 
@@ -33,52 +48,41 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
       console.log("Connected to server");
 
       // Emit join-room event
-      newSocket.emit("join-room", {
-        name: userData.given_name,
-        room: roomName,
-      });
+      newSocket.emit("join-room", { name: username, room: roomName });
 
-      // Listen for user-joined event
-      newSocket.on("user-joined", ({ user, message }) => {
+      // Notify all users when someone joins
+      newSocket.on("user-joined", ({ user }) => {
         toast.success(`${user} has joined the room.`);
       });
 
-      // Show toast message when a user joins
-      toast.success(`${userData.given_name} has joined the room.`);
-
-      // Listen for user disconnect
-      newSocket.on("disconnect", () => {
-        toast.error(`${userData.given_name} has left the room.`);
+      // Notify all users when someone leaves
+      newSocket.on("user-left", ({ user }) => {
+        toast.error(`${user} has left the room.`);
       });
 
-      // Fetch the current editor state when joining the room
+      // Fetch editor state
       newSocket.emit("fetch-editor-state", { room: roomName });
 
-      // Listen for real-time updates
+      // Handle real-time updates
       newSocket.on("editing", (data: string) => {
-        console.log("Data received from server:", data);
         setEditorData(data);
       });
 
-      // Listen for the current editor state when joining the room
+      // Fetch current state
       newSocket.on("editor-state", (data: string) => {
-        console.log("Fetched editor state:", data);
         setEditorData(data);
       });
     });
 
     return () => {
-      // Emit leave-room event before disconnecting
-      newSocket.emit("leave-room", {
-        name: userData.given_name,
-        room: roomName,
-      });
-
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.emit("leave-room", { name: username, room: roomName });
+        newSocket.disconnect();
+      }
     };
-  }, [userData?.given_name, roomName]);
+  }, [username, roomName, navigate]);
 
-  // Send text updates to the server
+  // Send text updates
   const sendChanges = (data: string) => {
     if (socket) {
       socket.emit("editing", { room: roomName, data });
@@ -98,10 +102,17 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
           >
             Copy Room Key
           </button>
+          <button
+            onClick={handleLeaveRoom}
+            className="p-2 bg-red-400 text-white rounded-lg hover:bg-red-600 transition-colors"
+          >
+            Leave Room
+          </button>
         </div>
       </div>
       <TextEditor editorData={editorData} setEditorData={sendChanges} />
     </div>
   );
 };
+
 export default SocketConfig;
