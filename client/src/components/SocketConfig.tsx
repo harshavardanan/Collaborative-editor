@@ -15,7 +15,6 @@ const SocketConfig: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const navigate = useNavigate();
 
-  // Copy room name to clipboard
   const copyToClipboard = () => {
     if (roomName) {
       navigator.clipboard
@@ -25,10 +24,10 @@ const SocketConfig: React.FC = () => {
     }
   };
 
-  // Handle leaving the room
   const handleLeaveRoom = () => {
     if (socket) {
       socket.emit("leave-room", { name: username, room: roomName });
+      toast.error("You have left the room.");
       socket.disconnect();
       navigate("/"); // Navigate back to home
     }
