@@ -90,7 +90,7 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
       <div className="w-full bg-gray-800 p-4 border-b border-gray-700 sticky top-0 z-50">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-indigo-400">
-            Collaborative Editor - Room: {roomName}
+            Room: {roomName}
           </h2>
           <button
             onClick={copyToClipboard}

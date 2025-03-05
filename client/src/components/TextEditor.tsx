@@ -68,8 +68,8 @@ export default function TextEditor({
   if (!editor) return <p>Loading editor...</p>;
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full bg-gray-50 p-4">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6 space-y-4">
+    <div className="flex justify-center items-center h-full w-full bg-gray-50 p-4">
+      <div className="w-full bg-white rounded-lg shadow-lg p-6 space-y-4">
         {/* Toolbar */}
         <div className="flex flex-wrap gap-2 border-b pb-4">
           <button
@@ -159,14 +159,10 @@ export default function TextEditor({
             Highlight
           </button>
         </div>
-
-        {/* Editor Content */}
         <EditorContent
           editor={editor}
           className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none border-none w-full"
         />
-
-        {/* Character Count */}
         <div className="flex justify-end text-sm text-gray-500">
           {editor.getText().length} characters
         </div>
