@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900">
+    <div className="flex items-center w-full justify-center h-full bg-gray-900">
       {currentRoom ? (
         <SocketConfig userData={userData} roomName={currentRoom.roomId} />
       ) : (

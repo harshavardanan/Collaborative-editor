@@ -14,13 +14,20 @@ export default function App() {
 
   return (
     <Router>
-      <div>
-        <Toaster position="top-right" />
+      {/* Global Toast Notifications */}
+      <Toaster position="top-right" />
+
+      {/* Full-page wrapper */}
+      <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+        {/* Navbar */}
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/editor/:roomId" element={<SocketConfig />} />
-        </Routes>
+
+        {/* Content Wrapper */}
+        <div className="flex-grow flex items-center justify-center p-6">
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

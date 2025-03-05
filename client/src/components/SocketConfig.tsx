@@ -87,7 +87,6 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
 
   return (
     <div className="flex flex-col items-center justify-start w-full bg-gray-900 h-screen overflow-hidden">
-      {/* Header Section */}
       <div className="w-full bg-gray-800 p-4 border-b border-gray-700 sticky top-0 z-50">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-indigo-400">
@@ -101,13 +100,8 @@ const SocketConfig: React.FC<SocketConfigProps> = ({ userData, roomName }) => {
           </button>
         </div>
       </div>
-
-      {/* Editor Section */}
-      <div className="w-full max-w-4xl mx-auto p-6 overflow-y-auto flex-1">
-        <TextEditor editorData={editorData} setEditorData={sendChanges} />
-      </div>
+      <TextEditor editorData={editorData} setEditorData={sendChanges} />
     </div>
   );
 };
-
 export default SocketConfig;
