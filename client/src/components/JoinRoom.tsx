@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { io } from "socket.io-client";
-const ENDPOINT = process.env.ENDPOINT;
+import { ENDPOINT } from "../App";
 
 const JoinRoom = () => {
   const [room, setRoom] = useState<string>("");

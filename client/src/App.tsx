@@ -4,6 +4,7 @@ import Home from "./Home";
 import { Toaster } from "react-hot-toast";
 import SocketConfig from "./components/SocketConfig";
 
+export const ENDPOINT = "http://localhost:5000";
 export default function App() {
   return (
     <Router>

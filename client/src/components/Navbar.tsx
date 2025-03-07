@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SignIn from "./SignIn";
+import { ENDPOINT } from "../App";
 
 const Navbar = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -7,7 +8,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
 
   useEffect(() => {
-    fetch("http://localhost:5000/auth/user", {
+    fetch(`${ENDPOINT}/auth/user`, {
       method: "GET",
       credentials: "include",
     })
@@ -20,7 +21,7 @@ const Navbar = () => {
   }, []);
 
   const signInWithGoogle = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open(`${ENDPOINT}/auth/google`, "_self");
   };
 
   const toggleMobileMenu = () => {

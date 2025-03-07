@@ -34,6 +34,9 @@ function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
 }
 
+app.get("/", (req, res) => {
+  res.send("welcome to server");
+});
 app.get("/user", (req, res) => {
   console.log("Session Data:", req.session);
   console.log("User Data:", req.user);
@@ -47,6 +50,7 @@ app.get("/user", (req, res) => {
 
 socketConnect(server, cors);
 connectDB();
+console.log(process.env.ENDPOINT);
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

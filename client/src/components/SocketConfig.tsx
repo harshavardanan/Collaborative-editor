@@ -3,8 +3,7 @@ import TextEditor from "./TextEditor";
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-
-const ENDPOINT = process.env.ENDPOINT;
+import { ENDPOINT } from "../App";
 
 const SocketConfig: React.FC = () => {
   const { roomName, username } = useParams<{

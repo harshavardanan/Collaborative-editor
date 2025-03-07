@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { ENDPOINT } from "./App";
 
 export default function Home() {
   const [roomName, setRoomName] = useState<string>("");
@@ -8,7 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/auth/user", {
+    fetch(`${ENDPOINT}/auth/user`, {
       method: "GET",
       credentials: "include",
     })
@@ -19,7 +20,7 @@ export default function Home() {
       .then((data) => setUserData(data))
       .catch((err) => {
         console.error("Error fetching user:", err);
-        navigate("/login"); // Redirect to login page if user is not authenticated
+        navigate("/login"); 
       });
   }, [navigate]);
 
