@@ -13,7 +13,7 @@ const session = require("express-session");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.ENDPOINT,
     credentials: true,
   })
 );
