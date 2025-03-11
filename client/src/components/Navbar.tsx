@@ -5,7 +5,7 @@ import { ENDPOINT } from "../App";
 const Navbar = () => {
   const [userData, setUserData] = useState<any>(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch(`${ENDPOINT}/auth/user`, {
@@ -24,8 +24,21 @@ const Navbar = () => {
     window.open(`${ENDPOINT}/auth/google`, "_self");
   };
 
+  const logout = () => {
+    localStorage.clear(); // Clear localStorage
+    fetch(`${ENDPOINT}/auth/logout`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(() => {
+        setUserData(null); // Reset user state
+        window.location.href = "/"; // Redirect to home
+      })
+      .catch((err) => console.error("Logout failed:", err));
+  };
+
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen); // Toggle mobile menu
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
@@ -36,15 +49,21 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 text-white-900">
+        <div className="hidden md:flex space-x-6 items-center">
           {userData ? (
             <>
               <img
                 src={userData.picture}
                 alt={userData.given_name}
-                className="w-8 h-8 rounded-full mr-2"
+                className="w-8 h-8 rounded-full"
               />
               <span className="font-semibold">{userData.given_name}</span>
+              <button
+                className="ml-4 px-3 py-1 bg-red-300 rounded hover:bg-red-600 transition"
+                onClick={logout}
+              >
+                Logout
+              </button>
             </>
           ) : (
             <button
@@ -82,20 +101,28 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-700 p-4 mt-2">
           {userData ? (
-            <div className="flex items-center space-x-4">
-              <img
-                src={userData.picture}
-                alt={userData.given_name}
-                className="w-8 h-8 rounded-full"
-              />
-              <span className="font-semibold">{userData.given_name}</span>
+            <div className="flex flex-col space-y-2">
+              <div className="flex items-center space-x-4">
+                <img
+                  src={userData.picture}
+                  alt={userData.given_name}
+                  className="w-8 h-8 rounded-full"
+                />
+                <span className="font-semibold">{userData.given_name}</span>
+              </div>
+              <button
+                className="w-full text-left px-3 py-1 bg-red-300 rounded hover:bg-red-600 transition"
+                onClick={logout}
+              >
+                Logout
+              </button>
             </div>
           ) : (
             <button
               className="w-full text-left hover:text-blue-400"
               onClick={() => {
                 setShowPopup(true);
-                setIsMobileMenuOpen(false); // Close mobile menu when login is clicked
+                setIsMobileMenuOpen(false);
               }}
             >
               Login
