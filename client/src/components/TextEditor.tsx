@@ -14,7 +14,7 @@ export default function TextEditor({
     <div className="flex justify-center items-center h-full w-full bg-gray-50 p-4">
       <div className="w-full bg-white rounded-lg shadow-lg p-6 space-y-4">
         <Editor
-          apiKey="wlwfaiug4zrnnn2z7rmqpk894wl70htq21fwa54fboltqkem" // Replace with your TinyMCE API key or remove if using self-hosted
+          apiKey="wlwfaiug4zrnnn2z7rmqpk894wl70htq21fwa54fboltqkem" 
           value={editorData}
           onEditorChange={(content) => setEditorData(content)}
           init={{

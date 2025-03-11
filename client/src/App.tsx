@@ -6,6 +6,8 @@ import SocketConfig from "./components/SocketConfig";
 
 export const ENDPOINT = "http://localhost:5000";
 export default function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  console.log(apiUrl);
   return (
     <Router>
       <Toaster position="top-right" />

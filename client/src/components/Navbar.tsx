@@ -23,7 +23,7 @@ const Navbar = () => {
   const signInWithGoogle = () => {
     window.open(`${ENDPOINT}/auth/google`, "_self");
   };
-
+  
   const logout = () => {
     localStorage.clear(); // Clear localStorage
     fetch(`${ENDPOINT}/auth/logout`, {
