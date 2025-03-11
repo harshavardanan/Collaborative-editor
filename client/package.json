@@ -15,6 +15,7 @@
     "@blocknote/react": "^0.24.0",
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.0.6",
+    "@tinymce/tinymce-react": "^6.0.0",
     "@tiptap/core": "^2.11.5",
     "@tiptap/extension-bullet-list": "^2.11.5",
     "@tiptap/extension-code-block-lowlight": "^2.11.5",
