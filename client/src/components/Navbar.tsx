@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import SignIn from "./SignIn";
 import { ENDPOINT } from "../App";
 
 const Navbar = () => {
@@ -8,33 +7,40 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`${ENDPOINT}/auth/user`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("User not authenticated");
-        return res.json();
-      })
-      .then((data) => setUserData(data))
-      .catch((err) => console.error("Error fetching user:", err));
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`${ENDPOINT}/auth/user`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUserData(data);
+        } else {
+          console.error("User not authenticated");
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
   }, []);
 
-  const signInWithGoogle = () => {
-    window.open(`${ENDPOINT}/auth/google`, "_self");
-  };
+  const logout = async () => {
+    try {
+      localStorage.clear();
+      await fetch(`${ENDPOINT}/logout`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-  const logout = () => {
-    localStorage.clear();
-    fetch(`${ENDPOINT}/logout`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then(() => {
-        setUserData(null); // Reset user state
-        window.location.href = "/"; // Redirect to home
-      })
-      .catch((err) => console.error("Logout failed:", err));
+      setUserData(null);
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const toggleMobileMenu = () => {
@@ -47,6 +53,7 @@ const Navbar = () => {
         <a href="/" className="text-2xl font-semibold">
           Home
         </a>
+
         <div className="hidden md:flex space-x-6 items-center">
           {userData ? (
             <>
@@ -72,6 +79,7 @@ const Navbar = () => {
             </button>
           )}
         </div>
+
         <button
           className="md:hidden focus:outline-none"
           onClick={toggleMobileMenu}
@@ -92,6 +100,7 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
+
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-700 p-4 mt-2">
           {userData ? (
@@ -123,12 +132,6 @@ const Navbar = () => {
             </button>
           )}
         </div>
-      )}
-      {showPopup && (
-        <SignIn
-          setShowPopup={setShowPopup}
-          signInWithGoogle={signInWithGoogle}
-        />
       )}
     </div>
   );
