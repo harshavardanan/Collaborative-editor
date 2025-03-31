@@ -23,7 +23,7 @@ app.use(
     secret: "your_secret_key",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true }, // Secure: true if using HTTPS
+    cookie: { secure: false, httpOnly: true }, 
   })
 );
 app.use(passport.initialize());

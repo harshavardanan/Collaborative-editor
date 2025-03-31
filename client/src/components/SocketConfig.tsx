@@ -28,7 +28,7 @@ const SocketConfig: React.FC = () => {
       socket.emit("leave-room", { name: username, room: roomName });
       toast.error("You have left the room.");
       socket.disconnect();
-      navigate("/"); // Navigate back to home
+      navigate("/");
     }
   };
 
@@ -45,28 +45,22 @@ const SocketConfig: React.FC = () => {
     newSocket.on("connect", () => {
       console.log("Connected to server");
 
-      // Emit join-room event
       newSocket.emit("join-room", { name: username, room: roomName });
 
-      // Notify all users when someone joins
       newSocket.on("user-joined", ({ user }) => {
         toast.success(`${user} has joined the room.`);
       });
 
-      // Notify all users when someone leaves
       newSocket.on("user-left", ({ user }) => {
         toast.error(`${user} has left the room.`);
       });
 
-      // Fetch editor state
       newSocket.emit("fetch-editor-state", { room: roomName });
 
-      // Handle real-time updates
       newSocket.on("editing", (data: string) => {
         setEditorData(data);
       });
 
-      // Fetch current state
       newSocket.on("editor-state", (data: string) => {
         setEditorData(data);
       });
@@ -80,7 +74,6 @@ const SocketConfig: React.FC = () => {
     };
   }, [username, roomName, navigate]);
 
-  // Send text updates
   const sendChanges = (data: string) => {
     if (socket) {
       socket.emit("editing", { room: roomName, data });
@@ -90,25 +83,32 @@ const SocketConfig: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-start w-full bg-gray-900 h-screen overflow-hidden">
       <div className="w-full bg-gray-800 p-4 border-b border-gray-700 sticky top-0 z-50">
-        <div className="flex items-center justify-between max-w-4xl mx-auto">
-          <h2 className="text-2xl font-semibold text-indigo-400">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-4xl mx-auto gap-3">
+          <h2 className="text-lg md:text-2xl font-semibold text-indigo-400 text-center md:text-left">
             Room: {roomName}
           </h2>
-          <button
-            onClick={copyToClipboard}
-            className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
-          >
-            Copy Room Key
-          </button>
-          <button
-            onClick={handleLeaveRoom}
-            className="p-2 bg-red-400 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Leave Room
-          </button>
+
+          <div className="flex flex-wrap justify-center gap-2">
+            <button
+              onClick={copyToClipboard}
+              className="p-2 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors text-sm md:text-base"
+            >
+              Copy Room Key
+            </button>
+
+            <button
+              onClick={handleLeaveRoom}
+              className="p-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm md:text-base"
+            >
+              Leave Room
+            </button>
+          </div>
         </div>
       </div>
-      <TextEditor editorData={editorData} setEditorData={sendChanges} />
+
+      <div className="w-full h-full p-2 md:p-4 overflow-auto">
+        <TextEditor editorData={editorData} setEditorData={sendChanges} />
+      </div>
     </div>
   );
 };

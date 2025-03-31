@@ -20,7 +20,7 @@ export default function Home() {
       .then((data) => setUserData(data))
       .catch((err) => {
         console.error("Error fetching user:", err);
-        navigate("/login"); 
+        navigate("/login");
       });
   }, [navigate]);
 
@@ -50,15 +50,12 @@ export default function Home() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="bg-gray-800 p-8 rounded-xl shadow-lg w-96 text-center">
-        {/* Create Room Button */}
         <button
           onClick={createRoom}
           className="w-full mb-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300"
         >
           Create New Room
         </button>
-
-        {/* Room Key Input */}
         <input
           type="text"
           placeholder="Enter room key"
