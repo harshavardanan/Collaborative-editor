@@ -23,10 +23,10 @@ const Navbar = () => {
   const signInWithGoogle = () => {
     window.open(`${ENDPOINT}/auth/google`, "_self");
   };
-  
+
   const logout = () => {
-    localStorage.clear(); // Clear localStorage
-    fetch(`${ENDPOINT}/auth/logout`, {
+    localStorage.clear();
+    fetch(`${ENDPOINT}/logout`, {
       method: "GET",
       credentials: "include",
     })
@@ -47,8 +47,6 @@ const Navbar = () => {
         <a href="/" className="text-2xl font-semibold">
           Home
         </a>
-
-        {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 items-center">
           {userData ? (
             <>
@@ -74,8 +72,6 @@ const Navbar = () => {
             </button>
           )}
         </div>
-
-        {/* Mobile Menu Toggle Button */}
         <button
           className="md:hidden focus:outline-none"
           onClick={toggleMobileMenu}
@@ -96,8 +92,6 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
-
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-700 p-4 mt-2">
           {userData ? (
@@ -130,8 +124,6 @@ const Navbar = () => {
           )}
         </div>
       )}
-
-      {/* Login Popup */}
       {showPopup && (
         <SignIn
           setShowPopup={setShowPopup}
