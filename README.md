@@ -1,0 +1,1 @@
+A real-time collaborative text editor built with Node.js, Express, React, and Socket.IO. This project allows multiple users to edit the same document simultaneously with live updates. It features room-based collaboration, user-friendly editing with rich text capabilities, and real-time synchronization across connected clients.
